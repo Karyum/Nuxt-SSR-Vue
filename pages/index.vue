@@ -1,5 +1,16 @@
 <template>
   <section class="container">
+    <label class="main-label">Add a beer to the list:
+      <fieldset>
+        <label>Beer name:
+          <input v-model="name" required @keyup.enter="sendBeers" type="text" />
+        </label>
+        <label>Beer Image:
+          <input v-model="img" @keyup.enter="sendBeers" type="text" />
+        </label>
+      </fieldset>
+    </label>
+    <br>
     <div v-for="beer in beers" :key="beer.id">
       <h2>{{beer.name}}</h2>
       <img :src="beer.img" alt="">
@@ -8,9 +19,20 @@
 </template>
 
 <script>
-// import Logo from '~/components/Logo.vue';
-
 export default {
+  data() {
+    return {
+      name: '',
+      img: '',
+    };
+  },
+  methods: {
+    sendBeers() {
+      this.$store.dispatch('postBeers', { name: this.name, img: this.img });
+      this.name = '';
+      this.img = '';
+    },
+  },
   computed: {
     beers() {
       return this.$store.state.beers;
@@ -29,6 +51,7 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
+  flex-direction: column;
 }
 
 img {
@@ -36,15 +59,34 @@ img {
   height: 100px;
 }
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+.main-label {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.links {
-  padding-top: 15px;
+label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  padding: .5rem;
 }
+
+fieldset {
+  display: flex;
+  padding-right: 4rem;
+  padding-left: 4rem;
+  border: 0;
+}
+
+input {
+  padding: .1rem;
+  border-radius: .3rem;
+  outline: 0;
+  margin-left: 1rem;
+}
+
 </style>

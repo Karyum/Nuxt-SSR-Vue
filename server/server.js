@@ -2,6 +2,7 @@ const express = require('express');
 const { Nuxt, Builder } = require('nuxt');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const api = require('./routes');
 
@@ -10,6 +11,7 @@ const port = process.env.PORT || 3000;
 
 app.set('port', port);
 
+app.use(bodyParser.json());
 // Import API Routes
 app.use('/api', api);
 

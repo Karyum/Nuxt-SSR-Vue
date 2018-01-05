@@ -4,23 +4,32 @@ import axios from '../plugins/axios';
 const createStore = () =>
   new Vuex.Store({
     state: {
-      beers: [
-        {
-          name: 'Goldstar',
-          img:
-            'https://wine-searcher1.freetls.fastly.net/images/labels/23/57/goldstar-dark-lager-beer-israel-10822357.jpg',
-          id: 1,
-        },
-      ],
+      beers: [],
+      error: false,
     },
     mutations: {
       addBeers(state, { data }) {
-        console.log(data);
+        this.state.beers = data;
+        this.state.error = false;
+      },
+      emitError() {
+        this.state.error = true;
       },
     },
     actions: {
-      async fetchBeers({ commit }) {
-        commit('addBeers', await axios.get('/api/fetchBeers'));
+      async fetchBeers({ commit }, postResponse) {
+        if (postResponse) {
+          if (postResponse.data.name) {
+            commit('addBeers', await axios.get('/api/beers'));
+          } else {
+            commit('emitError');
+          }
+        } else {
+          commit('addBeers', await axios.get('/api/beers'));
+        }
+      },
+      async postBeers({ dispatch }, beer) {
+        dispatch('fetchBeers', await axios.post('/api/beers', beer));
       },
     },
   });
