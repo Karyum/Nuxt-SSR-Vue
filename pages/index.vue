@@ -1,25 +1,25 @@
 <template>
   <section class="container">
-    <label class="main-label">Add a beer to the list:
-      <fieldset>
-        <label>Beer name:
-          <input v-model="name" required @keyup.enter="sendBeers" type="text" />
-        </label>
-        <label>Beer Image:
-          <input v-model="img" @keyup.enter="sendBeers" type="text" />
-        </label>
-      </fieldset>
-    </label>
-    <br>
-    <div v-for="beer in beers" :key="beer.id">
-      <h2>{{beer.name}}</h2>
-      <img :src="beer.img" alt="">
+    <add-beer @add-beer="sendBeers"></add-beer>
+    <div class="beer-list">
+      <div class="beer-item" v-for="beer in beers" :key="beer.id">
+        <nuxt-link
+        :to="{ path: `/beer/${beer._id}`, params: { name: 'beer', id: beer._id }}">
+          <h2>{{beer.name}}</h2>
+          <img :src="beer.img" alt="">
+        </nuxt-link>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
+import addBeer from '../components/addBeer.vue';
+
 export default {
+  components: {
+    'add-beer': addBeer,
+  },
   data() {
     return {
       name: '',
@@ -27,10 +27,8 @@ export default {
     };
   },
   methods: {
-    sendBeers() {
-      this.$store.dispatch('postBeers', { name: this.name, img: this.img });
-      this.name = '';
-      this.img = '';
+    sendBeers(name, img) {
+      this.$store.dispatch('postBeers', { name, img });
     },
   },
   computed: {
@@ -59,34 +57,13 @@ img {
   height: 100px;
 }
 
-.main-label {
-  margin-top: 2rem;
+.beer-list {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  flex-direction: row;
 }
 
-label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-flow: column;
-  padding: .5rem;
-}
-
-fieldset {
-  display: flex;
-  padding-right: 4rem;
-  padding-left: 4rem;
-  border: 0;
-}
-
-input {
-  padding: .1rem;
-  border-radius: .3rem;
-  outline: 0;
-  margin-left: 1rem;
+.beer-item {
+  margin: 2rem;
 }
 
 </style>
