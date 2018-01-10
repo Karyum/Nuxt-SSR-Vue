@@ -6,11 +6,15 @@ const createStore = () =>
     state: {
       beers: [],
       error: false,
+      currentId: '',
     },
     mutations: {
       addBeers(state, { data }) {
         this.state.beers = data;
         this.state.error = false;
+      },
+      addId(state, id) {
+        this.state.currentId = id;
       },
       emitError() {
         this.state.error = true;
