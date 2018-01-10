@@ -21,4 +21,12 @@ router
     });
   });
 
+router.get('/beer/:id', (req, res) => {
+  Beers.findById(req.params.id, (err, beer) => {
+    if (err) console.log(err);
+
+    res.end(JSON.stringify(beer));
+  });
+});
+
 module.exports = router;
