@@ -2,7 +2,6 @@
   <div v-if="name">
       <h1>{{ name }}</h1>
       <img :src="img" alt="">
-      <!-- <code><pre>{{params}}</pre></code> -->
   </div>
 </template>
 
@@ -17,7 +16,9 @@ export default {
         name: data.name,
         img: data.img,
       };
-    } catch (err) {}
+    } catch (err) {
+      return error({ message: 'An error occurd' });
+    }
   },
 };
 </script>
