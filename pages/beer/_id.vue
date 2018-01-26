@@ -17,7 +17,7 @@ export default {
         img: data.img,
       };
     } catch (err) {
-      return error({ message: 'An eeerror occurd' });
+      return error({ message: 'An error occurd' });
     }
   },
 };
